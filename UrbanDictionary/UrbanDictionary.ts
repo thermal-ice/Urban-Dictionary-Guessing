@@ -4,8 +4,6 @@ import {DefinitionObject} from "./DefinitionObject";
 import {sortDefinitionObjectOnTotalVotes, sortDefinitionObjectOnVotesDiff} from "./Sort";
 
 
-let myMsgQueue = new MessageQueue();
-
 // async function addToMsgQueue(msgQueue :MessageQueue){
 //         if (! msgQueue.queueIsEmpty()) {
 //             console.log("non empty queue!")
@@ -42,7 +40,7 @@ let myMsgQueue = new MessageQueue();
 // runTwice()
 
 
-async function getDefsForWord(randomWordsQueue :MessageQueue){
+async function getDefsForWord(randomWordsQueue :MessageQueue): Promise<MessageQueue>{
     if (randomWordsQueue.queueIsEmpty()){
         console.error("The queue is empty!!!!");
     }
@@ -56,33 +54,34 @@ async function getDefsForWord(randomWordsQueue :MessageQueue){
 
         let currMsgsQueue = new MessageQueue();
         currMsgsQueue.addAllToQueue(currWordDefsList);
-        //TODO go from here.
+        return currMsgsQueue;
     }catch(e){
         console.error(`Couldn't get the word "${currWordObj.word}" from UD`)
         console.error(e);
     }
+    return null;
 }
 
 
-async function getRandomMessages(randomWordsQueue :MessageQueue){
+async function getRandomMessages(randomWordsQueue :MessageQueue): Promise<void>{
     if (randomWordsQueue.queueIsEmpty()){
         //Need to fetch the words
         try{
             let messages: Array<DefinitionObject> = await ud.random();
             messages.sort(sortDefinitionObjectOnTotalVotes)
-            console.log(messages[0])
-            messages.forEach((defObj: DefinitionObject) => {
-                console.log(defObj.thumbs_up - defObj.thumbs_down);
-            })
+            // console.log(messages[0])
+            // messages.forEach((defObj: DefinitionObject) => {
+            //     console.log(defObj.thumbs_up - defObj.thumbs_down);
+            // })
             randomWordsQueue.addAllToQueue(messages);
-            await getDefsForWord(randomWordsQueue)
+            // await getDefsForWord(randomWordsQueue)
         }catch(e){
             console.error("Couldn't fetch random words from UD");
             console.error(e);
         }
 
     }else{
-        await getDefsForWord(randomWordsQueue);
+        // await getDefsForWord(randomWordsQueue);
     }
 
 }
@@ -93,8 +92,6 @@ async function getRandomMessages(randomWordsQueue :MessageQueue){
 // }
 //testStuff()
 
-getRandomMessages(myMsgQueue);
+// getRandomMessages(myMsgQueue);
 
-
-
-
+export {getRandomMessages, getDefsForWord}

@@ -21,9 +21,14 @@ const removeSquareBrackets = (phrase: string): string => {
 const filterOutWord = (word: string, phrase: string): string => {
     const regex = new RegExp(word,"gi");
     const hiddenStrRegex = new RegExp(/[^ ]/, "g")
-    const censoredWord = word.replace(hiddenStrRegex,"*")
+    const censoredWord = word.replace(hiddenStrRegex,"\\*")
     return phrase.replace(regex,censoredWord);
 }
 // console.log(filterOutWord("from the giddy up","You should have told me you don't like men from the giddy up and I wouldn't have [wasted] [my time] taking [you out]."))
 
-export {revealChars, removeSquareBrackets, filterOutWord}
+const getNumOfWords = (word:string): number => {
+    return word.split(" ").length;
+}
+// console.log(getWordLength("hi hi hi"));
+
+export {revealChars, removeSquareBrackets, filterOutWord, getNumOfWords}
