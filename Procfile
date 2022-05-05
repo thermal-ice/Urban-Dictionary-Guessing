@@ -1,0 +1,1 @@
+worker: ts-node Discord/DiscordBot.ts
