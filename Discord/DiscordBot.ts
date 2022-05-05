@@ -4,7 +4,8 @@ import {DiscordBotConfig,DiscordBotCommands} from "./DiscordBotConfigs";
 import {MessageQueue} from "../MessageQueue";
 import {revealChars, removeSquareBrackets, filterOutWord,getNumOfWords} from "../ModifyStrings"
 
-const config = require('../Config/botToken.json');
+const fs = require('fs');
+// const config = require('../Config/botToken.json');
 
 const client = new Client({intents: [Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILDS]});
 
@@ -106,12 +107,25 @@ client.on('messageCreate', async message => {
 });
 
 
+function main() {
+    if (process.env.BOT_TOKEN){
+        client.login(process.env.BOT_TOKEN).then( ()=>{
+            client.user.setPresence({
+                status: 'online',
+                afk: false,
+            });
+        });
+    }else{
+        const config = require('../Config/botToken.json');
+        client.login(config.token).then( ()=>{
+            client.user.setPresence({
+                status: 'online',
+                afk: false,
+            });
+        });
+    }
+}
 
-client.login(config.token).then( ()=>{
-    client.user.setPresence({
-        status: 'online',
-        afk: false,
-    });
-});
+main();
 
 console.log("working!");
