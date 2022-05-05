@@ -13,9 +13,12 @@ const randomMessagesQueue = new MessageQueue();
 
 
 client.on('messageCreate', async message => {
-    // console.log(message.toString());
 
-    if (message.toString() === DiscordBotCommands.initialGuess) {
+    if (message.toString() === DiscordBotCommands.getCommands){
+        await message.reply(DiscordBotCommands.allCommands)
+    }
+
+    else if (message.toString() === DiscordBotCommands.initialGuess) {
         await getRandomMessages(randomMessagesQueue);
 
         console.log("called ud");

@@ -5,7 +5,9 @@ const DiscordBotConfig = {
     altDefNum: 3
 };
 
+
 const DiscordBotCommands = {
+    getCommands: "!commands",
     initialGuess: "!ud",
     guessDef: "!g ",
     altDef: "!ad",
@@ -18,7 +20,11 @@ const DiscordBotCommands = {
         return userGuessMsg.substring(this.guessDef.length, userGuessMsg.length);
     },
     correctDefReasonStr: "User had the correct definition",
-    stupidWordReasonStr: "This was a stupid word to try and guess"
+    stupidWordReasonStr: "This was a stupid word to try and guess",
+    allCommands: `!ud -> Get a definition with examples to guess\n
+    !g [your guess here] -> Submit a guess (up to 3 accepted)\n
+    !ad -> Get an alternate definition and example (Up to 3 others)\n
+    !rw -> Reveal the word!`
     // guessFilter: (msg): boolean => {
     //     return msg.content.startsWith(this.guessDef);
     // },
