@@ -4,9 +4,6 @@ import {DiscordBotConfig,DiscordBotCommands} from "./DiscordBotConfigs";
 import {MessageQueue} from "../MessageQueue";
 import {revealChars, removeSquareBrackets, filterOutWord,getNumOfWords} from "../ModifyStrings"
 
-const fs = require('fs');
-// const config = require('../Config/botToken.json');
-
 const client = new Client({intents: [Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILDS]});
 
 const randomMessagesQueue = new MessageQueue();
@@ -42,10 +39,14 @@ client.on('messageCreate', async message => {
         const altDefMsgCollector: MessageCollector = message.channel.createMessageCollector({filter: altDefMsgFilter, time: 45000, max: DiscordBotConfig.altDefNum})
 
         altDefMsgCollector.on('collect', altDefReq => {
-            const newDefObj = currMsgDefsQueue.popFirst();
-            const newDefinition = filterOutWord(word,removeSquareBrackets(newDefObj.definition));
-            const newExample = filterOutWord(word, removeSquareBrackets(newDefObj.example));
-            altDefReq.reply(`Word Length: ** ${word.length} **, Number of words: **${getNumOfWords(word)}**\n\n**Definition**: ${newDefinition} \n**Example**: ${newExample}`)
+            if (currMsgDefsQueue.queueIsEmpty()){
+                altDefReq.reply("Unfortunately there aren't any more alternate definitions. Just git gud skrub.")
+            }else{
+                const newDefObj = currMsgDefsQueue.popFirst();
+                const newDefinition = filterOutWord(word,removeSquareBrackets(newDefObj.definition));
+                const newExample = filterOutWord(word, removeSquareBrackets(newDefObj.example));
+                altDefReq.reply(`Word Length: ** ${word.length} **, Number of words: **${getNumOfWords(word)}**\n\n**Definition**: ${newDefinition} \n**Example**: ${newExample}`)
+            }
         });
 
         guessMessageCollector.on('collect', guessMsg => {
@@ -119,7 +120,7 @@ function main() {
             });
         });
     }else{
-        const config = require('../Config/botToken.json');
+        const config = require('../Config/configsMap.json');
         client.login(config.token).then( ()=>{
             client.user.setPresence({
                 status: 'online',
