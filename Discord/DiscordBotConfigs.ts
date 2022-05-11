@@ -1,4 +1,3 @@
-import {Message} from "discord.js";
 
 const DiscordBotConfig = {
     guessNum: 3,
@@ -25,9 +24,6 @@ const DiscordBotCommands = {
     `!g [your guess here] -> Submit a guess (up to 3 accepted)\n` +
     `!ad -> Get an alternate definition and example (Up to 3 others)\n`+
     `!rw -> Reveal the word!`
-    // guessFilter: (msg): boolean => {
-    //     return msg.content.startsWith(this.guessDef);
-    // },
 
 }
 

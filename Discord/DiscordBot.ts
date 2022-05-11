@@ -44,7 +44,7 @@ client.on('messageCreate', async message => {
         const firstDef = removeCharsAfterCutoff(filterOutWord(word,removeSquareBrackets(firstDefObj.definition)));
         const firstExample = removeCharsAfterCutoff(filterOutWord(word, removeSquareBrackets(firstDefObj.example)));
         console.log(word);
-        await message.reply(`Word Length: ** ${getCharCountOfWords(word)} **, Number of words: **${getNumOfWords(word)}**\n\n**Definition**: ${firstDef} \n**Example**: ${firstExample}`)
+        await message.reply(`Word Length: ** ${getCharCountOfWords(word)} **, Number of words: **${getNumOfWords(word)}**\n\n**Definition**: ${firstDef} \n\n**Example**: ${firstExample}`)
 
 
         const altDefMsgFilter = userMsg => userMsg.content === DiscordBotCommands.altDef;
@@ -58,7 +58,7 @@ client.on('messageCreate', async message => {
                 const newDefObj = currMsgDefsQueue.popFirst();
                 const newDefinition = removeCharsAfterCutoff(filterOutWord(word,removeSquareBrackets(newDefObj.definition)));
                 const newExample = removeCharsAfterCutoff(filterOutWord(word, removeSquareBrackets(newDefObj.example)));
-                altDefReq.reply(`Word Length: ** ${getCharCountOfWords(word)} **, Number of words: **${getNumOfWords(word)}**\n\n**Definition**: ${newDefinition} \n**Example**: ${newExample}`)
+                altDefReq.reply(`Word Length: ** ${getCharCountOfWords(word)} **, Number of words: **${getNumOfWords(word)}**\n\n**Definition**: ${newDefinition} \n\n**Example**: ${newExample}`)
             }
         });
 
@@ -88,7 +88,7 @@ client.on('messageCreate', async message => {
             } else{
                 // console.log("no correct guesses :(");
                 // console.log(`Collected ${collected.size} items`);
-                message.reply(`You ran out of time or guesses! The correct word(s) is: ${word}`);
+                message.reply(`You ran out of time or guesses! The correct word(s) is: __${word}__`);
             }
         });
 
