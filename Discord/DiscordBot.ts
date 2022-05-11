@@ -44,7 +44,7 @@ client.on('messageCreate', async message => {
         const firstDef = removeCharsAfterCutoff(filterOutWord(word,removeSquareBrackets(firstDefObj.definition)));
         const firstExample = removeCharsAfterCutoff(filterOutWord(word, removeSquareBrackets(firstDefObj.example)));
         console.log(word);
-        await message.reply(`Word Length: ** ${word.length} **, Number of words: **${getNumOfWords(word)}**\n\n**Definition**: ${firstDef} \n**Example**: ${firstExample}`)
+        await message.reply(`Word Length: ** ${getCharCountOfWords(word)} **, Number of words: **${getNumOfWords(word)}**\n\n**Definition**: ${firstDef} \n**Example**: ${firstExample}`)
 
 
         const altDefMsgFilter = userMsg => userMsg.content === DiscordBotCommands.altDef;
