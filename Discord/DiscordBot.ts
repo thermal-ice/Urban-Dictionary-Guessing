@@ -2,7 +2,14 @@ import {Client, Intents, Message, MessageCollector, TextChannel} from "discord.j
 import {getDefsForWord,getRandomMessages} from "../UrbanDictionary/UrbanDictionary"
 import {DiscordBotConfig,DiscordBotCommands} from "./DiscordBotConfigs";
 import {MessageQueue} from "../MessageQueue";
-import {revealChars, removeSquareBrackets, filterOutWord, getNumOfWords, getCharCountOfWords} from "../ModifyStrings"
+import {
+    revealChars,
+    removeSquareBrackets,
+    filterOutWord,
+    getNumOfWords,
+    getCharCountOfWords,
+    removeCharsAfterCutoff
+} from "../ModifyStrings"
 import {DefinitionObject} from "../UrbanDictionary/DefinitionObject";
 import {getUDWordObjWithoutNames} from "../Name/BehindTheName";
 
@@ -34,8 +41,8 @@ client.on('messageCreate', async message => {
         // const word = firstDefObj.word;
 
 
-        const firstDef = filterOutWord(word,removeSquareBrackets(firstDefObj.definition));
-        const firstExample = filterOutWord(word, removeSquareBrackets(firstDefObj.example));
+        const firstDef = removeCharsAfterCutoff(filterOutWord(word,removeSquareBrackets(firstDefObj.definition)));
+        const firstExample = removeCharsAfterCutoff(filterOutWord(word, removeSquareBrackets(firstDefObj.example)));
         console.log(word);
         await message.reply(`Word Length: ** ${word.length} **, Number of words: **${getNumOfWords(word)}**\n\n**Definition**: ${firstDef} \n**Example**: ${firstExample}`)
 
@@ -49,8 +56,8 @@ client.on('messageCreate', async message => {
                 altDefReq.reply("Unfortunately there aren't any more alternate definitions. Just git gud skrub.")
             }else{
                 const newDefObj = currMsgDefsQueue.popFirst();
-                const newDefinition = filterOutWord(word,removeSquareBrackets(newDefObj.definition));
-                const newExample = filterOutWord(word, removeSquareBrackets(newDefObj.example));
+                const newDefinition = removeCharsAfterCutoff(filterOutWord(word,removeSquareBrackets(newDefObj.definition)));
+                const newExample = removeCharsAfterCutoff(filterOutWord(word, removeSquareBrackets(newDefObj.example)));
                 altDefReq.reply(`Word Length: ** ${getCharCountOfWords(word)} **, Number of words: **${getNumOfWords(word)}**\n\n**Definition**: ${newDefinition} \n**Example**: ${newExample}`)
             }
         });
