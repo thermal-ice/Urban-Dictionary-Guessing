@@ -27,9 +27,9 @@ const filterOutWord = (word: string, phrase: string): string => {
 // console.log(filterOutWord("from the giddy up","You should have told me you don't like men from the giddy up and I wouldn't have [wasted] [my time] taking [you out]."))
 
 const getNumOfWords = (word:string): number => {
-    return word.split(" ").length;
+    return word.trim().split(" ").length;
 }
-// console.log(getWordLength("hi hi hi"));
+console.log(getNumOfWords("   hi hi hi  "));
 
 const getCharCountOfWords = (words: string) => {
     const wordArr: Array<string> = words.split(" ");
