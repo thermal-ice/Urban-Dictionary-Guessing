@@ -31,4 +31,12 @@ const getNumOfWords = (word:string): number => {
 }
 // console.log(getWordLength("hi hi hi"));
 
-export {revealChars, removeSquareBrackets, filterOutWord, getNumOfWords}
+const getCharCountOfWords = (words: string) => {
+    const wordArr: Array<string> = words.split(" ");
+    let charCount = 0;
+    wordArr.forEach(currWord => {charCount += currWord.length});
+    return charCount;
+}
+// console.log(getCharCountOfWords("hi hi bye"));
+
+export {revealChars, removeSquareBrackets, filterOutWord, getNumOfWords, getCharCountOfWords}

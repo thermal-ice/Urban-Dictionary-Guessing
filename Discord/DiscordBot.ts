@@ -2,7 +2,9 @@ import {Client, Intents, Message, MessageCollector, TextChannel} from "discord.j
 import {getDefsForWord,getRandomMessages} from "../UrbanDictionary/UrbanDictionary"
 import {DiscordBotConfig,DiscordBotCommands} from "./DiscordBotConfigs";
 import {MessageQueue} from "../MessageQueue";
-import {revealChars, removeSquareBrackets, filterOutWord,getNumOfWords} from "../ModifyStrings"
+import {revealChars, removeSquareBrackets, filterOutWord, getNumOfWords, getCharCountOfWords} from "../ModifyStrings"
+import {DefinitionObject} from "../UrbanDictionary/DefinitionObject";
+import {getUDWordObjWithoutNames} from "../Name/BehindTheName";
 
 const client = new Client({intents: [Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILDS]});
 
@@ -16,17 +18,21 @@ client.on('messageCreate', async message => {
     }
 
     else if (message.toString() === DiscordBotCommands.initialGuess) {
-        await getRandomMessages(randomMessagesQueue);
+        const validDefObj : DefinitionObject = await getUDWordObjWithoutNames(randomMessagesQueue);
+        const word: string = validDefObj.word;
 
         console.log("called ud");
         const guessMsgFilter = userGuessMsg => userGuessMsg.content.startsWith(DiscordBotCommands.guessDef);
 
         const guessMessageCollector: MessageCollector = message.channel.createMessageCollector({filter: guessMsgFilter, time: 45000, max: DiscordBotConfig.guessNum})
 
-        const currMsgDefsQueue = await getDefsForWord(randomMessagesQueue);
+        const currMsgDefsQueue = await getDefsForWord(word);
 
-        const firstDefObj = currMsgDefsQueue.popFirst();
-        const word = firstDefObj.word;
+        const firstDefObj: DefinitionObject = currMsgDefsQueue.popFirst();
+
+        // const firstDefObj = currMsgDefsQueue.popFirst();
+        // const word = firstDefObj.word;
+
 
         const firstDef = filterOutWord(word,removeSquareBrackets(firstDefObj.definition));
         const firstExample = filterOutWord(word, removeSquareBrackets(firstDefObj.example));
@@ -45,7 +51,7 @@ client.on('messageCreate', async message => {
                 const newDefObj = currMsgDefsQueue.popFirst();
                 const newDefinition = filterOutWord(word,removeSquareBrackets(newDefObj.definition));
                 const newExample = filterOutWord(word, removeSquareBrackets(newDefObj.example));
-                altDefReq.reply(`Word Length: ** ${word.length} **, Number of words: **${getNumOfWords(word)}**\n\n**Definition**: ${newDefinition} \n**Example**: ${newExample}`)
+                altDefReq.reply(`Word Length: ** ${getCharCountOfWords(word)} **, Number of words: **${getNumOfWords(word)}**\n\n**Definition**: ${newDefinition} \n**Example**: ${newExample}`)
             }
         });
 

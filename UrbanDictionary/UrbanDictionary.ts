@@ -40,23 +40,19 @@ import {sortDefinitionObjectOnTotalVotes, sortDefinitionObjectOnVotesDiff} from 
 // runTwice()
 
 
-async function getDefsForWord(randomWordsQueue :MessageQueue): Promise<MessageQueue>{
-    if (randomWordsQueue.queueIsEmpty()){
-        console.error("The queue is empty!!!!");
-    }
-    let currWordObj = randomWordsQueue.popFirst();
+async function getDefsForWord(randomWord :string): Promise<MessageQueue>{
 
     //Get 10 different examples of it.
 
     try{
-        let currWordDefsList: Array<DefinitionObject> = await ud.define(currWordObj.word);
+        let currWordDefsList: Array<DefinitionObject> = await ud.define(randomWord);
         currWordDefsList.sort(sortDefinitionObjectOnVotesDiff);
 
         let currMsgsQueue = new MessageQueue();
         currMsgsQueue.addAllToQueue(currWordDefsList);
         return currMsgsQueue;
     }catch(e){
-        console.error(`Couldn't get the word "${currWordObj.word}" from UD`)
+        console.error(`Couldn't get the word "${randomWord}" from UD`)
         console.error(e);
     }
     return null;
