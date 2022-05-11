@@ -138,6 +138,7 @@ function main() {
             client.user.setPresence({
                 status: 'online',
                 afk: false,
+                activities: [{name: "!commands", type:"PLAYING"}]
             });
         });
     }

@@ -29,7 +29,7 @@ const filterOutWord = (word: string, phrase: string): string => {
 const getNumOfWords = (word:string): number => {
     return word.trim().split(" ").length;
 }
-console.log(getNumOfWords("   hi hi hi  "));
+// console.log(getNumOfWords("   hi hi hi  "));
 
 const getCharCountOfWords = (words: string) => {
     const wordArr: Array<string> = words.split(" ");
