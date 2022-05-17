@@ -31,7 +31,7 @@ client.on('messageCreate', async message => {
         console.log("called ud");
         const guessMsgFilter = userGuessMsg => userGuessMsg.content.startsWith(DiscordBotCommands.guessDef);
 
-        const guessMessageCollector: MessageCollector = message.channel.createMessageCollector({filter: guessMsgFilter, time: 45000, max: DiscordBotConfig.guessNum})
+        const guessMessageCollector: MessageCollector = message.channel.createMessageCollector({filter: guessMsgFilter, time: DiscordBotConfig.timeToGuessWord, max: DiscordBotConfig.guessNum})
 
         const currMsgDefsQueue = await getDefsForWord(word);
 
@@ -49,7 +49,7 @@ client.on('messageCreate', async message => {
 
         const altDefMsgFilter = userMsg => userMsg.content === DiscordBotCommands.altDef;
 
-        const altDefMsgCollector: MessageCollector = message.channel.createMessageCollector({filter: altDefMsgFilter, time: 45000, max: DiscordBotConfig.altDefNum})
+        const altDefMsgCollector: MessageCollector = message.channel.createMessageCollector({filter: altDefMsgFilter, time: DiscordBotConfig.timeToGuessWord, max: DiscordBotConfig.altDefNum})
 
         altDefMsgCollector.on('collect', altDefReq => {
             if (currMsgDefsQueue.queueIsEmpty()){
@@ -94,7 +94,7 @@ client.on('messageCreate', async message => {
 
         const stopGuessingFilter = msg => msg.content === DiscordBotCommands.stupidWord;
 
-        const stopGuessingCollector: MessageCollector = message.channel.createMessageCollector({filter: stopGuessingFilter, time: 45000, max: 1})
+        const stopGuessingCollector: MessageCollector = message.channel.createMessageCollector({filter: stopGuessingFilter, time: DiscordBotConfig.timeToGuessWord, max: 1})
 
         stopGuessingCollector.on("collect", msg =>{
             msg.reply(`I guess your brain is too smooth for this. The word is __${word}__`)
