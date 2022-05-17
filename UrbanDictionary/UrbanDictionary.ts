@@ -2,6 +2,7 @@ import ud = require('urban-dictionary')
 import {MessageQueue} from "../MessageQueue";
 import {DefinitionObject} from "./DefinitionObject";
 import {sortDefinitionObjectOnTotalVotes, sortDefinitionObjectOnVotesDiff} from "./Sort";
+import {DiscordBotConfig} from "../Discord/DiscordBotConfigs";
 
 
 // async function addToMsgQueue(msgQueue :MessageQueue){
@@ -63,13 +64,18 @@ async function getRandomMessages(randomWordsQueue :MessageQueue): Promise<void>{
     if (randomWordsQueue.queueIsEmpty()){
         //Need to fetch the words
         try{
-            let messages: Array<DefinitionObject> = await ud.random();
-            messages.sort(sortDefinitionObjectOnTotalVotes)
+            let allMsgs: Array<DefinitionObject> = []
+            for (let i = 0; i < DiscordBotConfig.callsToRandomApi; i ++){
+                let currMsgs: Array<DefinitionObject> = await ud.random();
+                allMsgs.push(... currMsgs);
+            }
+            // let messages: Array<DefinitionObject> = await ud.random();
+            allMsgs.sort(sortDefinitionObjectOnTotalVotes)
             // console.log(messages[0])
             // messages.forEach((defObj: DefinitionObject) => {
             //     console.log(defObj.thumbs_up - defObj.thumbs_down);
             // })
-            randomWordsQueue.addAllToQueue(messages);
+            randomWordsQueue.addAllToQueue(allMsgs);
             // await getDefsForWord(randomWordsQueue)
         }catch(e){
             console.error("Couldn't fetch random words from UD");

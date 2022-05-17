@@ -4,6 +4,7 @@ import {MessageQueue} from "../MessageQueue";
 import {DefinitionObject} from "../UrbanDictionary/DefinitionObject";
 import {getNumOfWords} from "../ModifyStrings";
 import {getDefsForWord, getRandomMessages} from "../UrbanDictionary/UrbanDictionary";
+import {DiscordBotConfig} from "../Discord/DiscordBotConfigs";
 
 function sleep(ms) {
     return new Promise((resolve) => {
@@ -44,7 +45,8 @@ async function stringIsName(word: string){
 
 async function getUDWordObjWithoutNames(randomMsgs: MessageQueue): Promise<DefinitionObject>{
     while(true){
-        if (randomMsgs.queueIsEmpty()){
+        if (randomMsgs.getLength() <= DiscordBotConfig.discardedRandomWords){
+            randomMsgs.emptyQueue();
             await getRandomMessages(randomMsgs);
         }
         //Otherwise word is a single word (no spaces), check if it's a name

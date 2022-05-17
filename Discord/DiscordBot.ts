@@ -104,22 +104,6 @@ client.on('messageCreate', async message => {
         });
 
 
-
-
-
-        // const filter = m => m.content.includes('discord');
-        // const collector = message.channel.createMessageCollector({ filter, time: 15000 , max: 4});
-        //
-        // let num = 0;
-        // collector.on('collect', m => {
-        //     num++;
-        //     console.log(`Collected ${m.content}` + "num is:" + num);
-        // });
-        // //
-        // collector.on('end', collected => {
-        //     console.log(`Collected ${collected.size} items`);
-        // });
-
     }
 });
 

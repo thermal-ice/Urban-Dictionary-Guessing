@@ -1,9 +1,12 @@
 
 const DiscordBotConfig = {
     guessNum: 3,
-    altDefNum: 3
+    altDefNum: 3,
+    discardedRandomWords: 24,
+    callsToRandomApi: 3
 };
-
+// disardedRandomWords is the number of words that will not be used with the bot.
+// This is because some words are niche and not worth exploring
 
 const DiscordBotCommands = {
     getCommands: "!commands",

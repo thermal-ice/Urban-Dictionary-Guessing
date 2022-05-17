@@ -23,6 +23,14 @@ class MessageQueue {
         return this._queue;
     }
 
+    getLength(){
+        return this._queue.length;
+    }
+
+    emptyQueue(){
+        this._queue  = []
+    }
+
 }
 
 export {MessageQueue};
